@@ -15,15 +15,21 @@ func main() {
 }
 
 func findUpperCaseWords(text string) {
-	scanner := bufio.NewScanner(strings.NewReader(text))
-	scanner.Split(bufio.ScanWords)
-	for scanner.Scan() {
-		word := scanner.Text()
-		if isUpperCase(word) {
-			color.Red(word)
-		} else {
-			color.Blue(word)
+	//First Scanner breaks text into lines
+	lineScanner := bufio.NewScanner(strings.NewReader(text))
+	lineScanner.Split(bufio.ScanLines)
+	for lineScanner.Scan() {
+		wordScanner := bufio.NewScanner(strings.NewReader(lineScanner.Text()))
+		wordScanner.Split(bufio.ScanWords)
+		for wordScanner.Scan() {
+			word := wordScanner.Text()
+			if isUpperCase(word) {
+				color.Red(word)
+			} else {
+				color.Blue(word)
+			}
 		}
+		//fmt.Println()
 	}
 }
 
