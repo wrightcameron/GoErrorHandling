@@ -1,0 +1,9 @@
+## Unit Tests 
+Used the command "go test"
+TestCalculateSunRiseSet_Happy - Runs a happy path on TestCalculateSunRiseSet function.
+TestGetCoordinatesFromResponse_Happy - Runs a happy path on TestCalculateSunRiseSet function.
+
+## Test Coverage
+
+Used the command "go test -coverprofile fmt"
+Total Test Coverage = 20%
