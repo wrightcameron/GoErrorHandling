@@ -18,6 +18,7 @@ location on the current date.
 |benchmark_test.go|Contains functions for benchmarking main.go                      |
 |results.txt    |Information about current unit tests, test coverage, and benchmarks|
 |unit_test.go   |Contains functions for unit testing main.go                        |
+|jsonfiles/     |directory of json files used for unit testing                      |
 
 ## Building the project
 
