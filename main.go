@@ -13,12 +13,20 @@ import (
 	"gopkg.in/resty.v1"
 )
 
-func main() {
+//getUserAddress asks the user what there address is from the console.
+//It returns that address as a string.
+func getUserAddress() string {
 	//TODO User inputs address
 	fmt.Println("Find out when the Sun will rise and set at your location.")
 	fmt.Println("Input your address")
 	reader := bufio.NewReader(os.Stdin)
 	address, _ := reader.ReadString('\n')
+	return address
+}
+
+//sendGetRequestToGoogleMaps sends a REST GET request to Google map's API,
+//with a given address.  A resty response object is given back.
+func sendGetRequestToGoogleMaps(address string) (response *resty.Response) {
 	//TODO Get request to google
 	resp, err := resty.R().
 		SetQueryParams(map[string]string{
@@ -29,21 +37,30 @@ func main() {
 	if err != nil {
 		fmt.Printf("\nError: %v", err)
 	}
-	//fmt.Printf("\nResponse Body: %v", resp)
-	//fmt.Println(reflect.TypeOf(resp.String()))
+	return resp
+}
 
+func getCoordinatesFromResponse(ResponseBody string) (latitude, longitude float64) {
 	//TODO Parse JSON for lat, lng
 	pat := regexp.MustCompile(`"location"\s*:\s*{\s*"lat"\s*:\s-?\d+.\d+,\s*"lng"\s*:\s*-?\d+.\d+\s*}`)
-	s := pat.FindString(resp.String())
+	s := pat.FindString(ResponseBody)
 	//fmt.Println(s)
 
 	pat = regexp.MustCompile(`-?\d+.\d+`)
 	coordinates := pat.FindAllString(s, -1)
 	//fmt.Println(coordinates)
-	latitude, _ := strconv.ParseFloat(coordinates[0], 64)
-	longitude, _ := strconv.ParseFloat(coordinates[1], 64)
-	//fmt.Println(latitude)
-	//fmt.Println(longitude)
+	latitude, _ = strconv.ParseFloat(coordinates[0], 64)
+	longitude, _ = strconv.ParseFloat(coordinates[1], 64)
+	return latitude, longitude
+}
+func main() {
+
+	address := getUserAddress()
+
+	resp := sendGetRequestToGoogleMaps(address)
+
+	latitude, longitude := getCoordinatesFromResponse(resp.String())
+
 	//TODO put lat, lng into sunrise sunset
 	rise, set := sunrise.SunriseSunset(longitude, latitude, 2018, time.June, 19)
 	//TODO display the sunrise and sunset
