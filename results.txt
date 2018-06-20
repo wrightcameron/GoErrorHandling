@@ -2,8 +2,13 @@
 Used the command "go test"
 TestCalculateSunRiseSet_Happy - Runs a happy path on TestCalculateSunRiseSet function.
 TestGetCoordinatesFromResponse_Happy - Runs a happy path on TestCalculateSunRiseSet function.
+TestGetCoordinatesFromResponse_CoordinatesMissing - Runs a sad path where location is not in the JSON string
 
 ## Test Coverage
-
 Used the command "go test -coverprofile fmt"
 Total Test Coverage = 20%
+
+## Benchmarking
+Used the command "go test -bench=."
+BenchmarkCalculateSunRiseSet-4                   2000000               732 ns/op
+BenchmarkGetCoordinatesFromResponse-4              30000             51539 ns/op
